@@ -30,12 +30,32 @@ module Enumerable
     array
   end
 
+  def my_all?(arr = nil)
+    return to_enum(:my_all) unless block_given?
+    
+    return true if arr == nil
+
+    count = 0
+    arr.each do |item|
+      if yield(item)
+        return false
+      end
+    end
+
+    if count > 0 
+      return false 
+    else  
+      return true
+    end
+  end
+
 end
 
-my_array = ['abdl', 'cat','dog']
-
-hash = Hash.new
-my_array.my_each_with_index
-
 #### test normal select
-p my_array.my_select {|item| item.length.even? }
+p %w[ant bear cat].my_all? { |word| word.length >= 3 } #=> true
+p %w[ant bear cat].my_all? { |word| word.length >= 4 } #=> false
+p %w[ant bear cat].my_all?(/t/)                        #=> false
+p [1, 2i, 3.14].my_all?(Numeric)                       #=> true
+p [nil, true, 99].my_all?                              #=> false
+p [].my_all?                                           #=> true
+
