@@ -18,9 +18,24 @@ module Enumerable
     end
   end
 
+  def my_select
+    # filters a given array
+    #  given a filter, return the modified array
+    return to_enum(:my_select) unless block_given?
+
+    array = []
+    each do |item|
+      array << item  if yield(item)
+    end
+    array
+  end
+
 end
 
 my_array = ['abdl', 'cat','dog']
 
 hash = Hash.new
 my_array.my_each_with_index
+
+#### test normal select
+p my_array.my_select {|item| item.length.even? }
