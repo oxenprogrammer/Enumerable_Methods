@@ -29,9 +29,7 @@ module Enumerable
     elements = [] if is_a? Array
     elements = {} if is_a? Hash
     my_each do |item|
-      next unless yield item
-
-      elements << item
+      elements << item if yield item
     end
     elements
   end
@@ -80,14 +78,18 @@ module Enumerable
   end
 
   # my_map
-  def my_map
+  def my_map(proc = nil)
     return enum_for(:my_map) unless block_given?
 
     item = [] if is_a? Array
     item = {} if is_a? Hash
 
     my_each do |element|
-      item << yield(element)
+      item << if proc && proc.instance_of?(proc)
+                proc.call(element)
+              else
+                yield(element)
+              end
     end
     item
   end
@@ -111,8 +113,8 @@ end
 
 p [1, 2, 3, 4].count
 h = { foo: 0, bar: 1, baz: 2 }
-p(h.map { |_key, element| element * 2 })
+p([1, 2, 3, 4].my_map { |element| element * 2 })
 
 p [1, 2, 3, 4].my_each_with_index { |_item, index| index }
 
-p(h.select { |_key, value| value.even? })
+p([1, 2, 3, 4].my_select(&:even?))
