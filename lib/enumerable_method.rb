@@ -35,8 +35,8 @@ module Enumerable
   end
 
   # my_all function
-  def my_all?(param = nil)
-    if param.nil?
+  def my_all?(parameter = nil)
+    if parameter.nil?
       if block_given?
         each do |item|
           return false unless yield(item)
