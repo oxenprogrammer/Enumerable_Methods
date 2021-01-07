@@ -18,6 +18,7 @@ module Enumerable
     end
   end
 
+  # my_select function
   def my_select
     # filters a given array
     #  given a filter, return the modified array
@@ -30,18 +31,34 @@ module Enumerable
     array
   end
 
-  def my_all?
-    y=0
-    self.each do |x|
-     y += 1 unless (x==false || x.nil?)
-    end
-    if y == self.size 
-      true 
-    else 
-      false
+  # my_all function
+  def my_all?(parameter = nil)
+    unless parameter == nil 
+      self.each do |item|
+        return false unless item.kind_of?(parameter)
+      end
+
+      return true
+    else
+      if block_given?
+        self.each do |item| 
+          return false unless yield(item)
+        end
+
+        return true
+      else
+        y=0
+        self.each do |x|
+         y += 1 unless (x==false || x.nil?)
+        end
+        if y == self.size 
+          true 
+        else 
+          false
+        end
+      end
     end
   end
-
 end
 
 #### test normal select
@@ -52,7 +69,8 @@ end
 # p [nil, true, 99].my_all?                              #=> false
 # p [].my_all?                                           #=> true
 
+puts /t/.class
+# my_array = %w[ant bear cat]
+# # p [nil, true, 99].my_all?{|block| block.length >= 1}
+# p [false].my_all?
 
-my_array = %w[ant bear cat]
-# p [nil, true, 99].my_all?{|block| block.length >= 1}
-p [false].my_all?
