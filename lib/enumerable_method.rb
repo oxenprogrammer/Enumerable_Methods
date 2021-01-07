@@ -1,3 +1,4 @@
+# This is our custom fake enumerables
 module Enumerable
   # my_each
   def my_each(&block)
@@ -111,10 +112,10 @@ end
 # # p [nil, true, 99].my_all?{|block| block.length >= 1}
 # p [false].my_all?
 
-p [1, 2, 3, 4].count
-h = { foo: 0, bar: 1, baz: 2 }
-p([1, 2, 3, 4].my_map { |element| element * 2 })
+# p [1, 2, 3, 4].count
+# h = { foo: 0, bar: 1, baz: 2 }
+# p([1, 2, 3, 4].my_map { |element| element * 2 })
 
-p [1, 2, 3, 4].my_each_with_index { |_item, index| index }
+# p [1, 2, 3, 4].my_each_with_index { |_item, index| index }
 
-p([1, 2, 3, 4].my_select(&:even?))
+# p([1, 2, 3, 4].my_select(&:even?))
