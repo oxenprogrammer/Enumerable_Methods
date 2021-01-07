@@ -1,3 +1,4 @@
+# This is our custom fake enumerables
 module Enumerable
   # my_each
   def my_each(&block)
@@ -14,24 +15,24 @@ module Enumerable
     return to_enum(:my_each_with_index) unless block_given?
 
     i = 0
-    each do |data|
+    my_each do |data|
       yield data, i
 
       i += 1
     end
+    self
   end
 
   # my_select function
   def my_select
-    # filters a given array
-    #  given a filter, return the modified array
     return to_enum(:my_select) unless block_given?
 
-    array = []
-    each do |item|
-      array << item if yield(item)
+    elements = [] if is_a? Array
+    elements = {} if is_a? Hash
+    my_each do |item|
+      elements << item if yield item
     end
-    array
+    elements
   end
 
   # my_all function
@@ -78,12 +79,18 @@ module Enumerable
   end
 
   # my_map
-  def my_map
+  def my_map(proc = nil)
+    return enum_for(:my_map) unless block_given?
+
     item = [] if is_a? Array
     item = {} if is_a? Hash
 
     my_each do |element|
-      item << yield(element)
+      item << if proc && proc.instance_of?(proc)
+                proc.call(element)
+              else
+                yield(element)
+              end
     end
     item
   end
@@ -105,6 +112,10 @@ end
 # # p [nil, true, 99].my_all?{|block| block.length >= 1}
 # p [false].my_all?
 
-p [1, 2, 3, 4].count
-h = { foo: 0, bar: 1, baz: 2 }
-p(h.map { |_key, element| element * 2 })
+# p [1, 2, 3, 4].count
+# h = { foo: 0, bar: 1, baz: 2 }
+# p([1, 2, 3, 4].my_map { |element| element * 2 })
+
+# p [1, 2, 3, 4].my_each_with_index { |_item, index| index }
+
+# p([1, 2, 3, 4].my_select(&:even?))
