@@ -81,6 +81,8 @@ module Enumerable
 
   # my_map
   def my_map
+    return enum_for(:my_map) unless block_given?
+
     item = [] if is_a? Array
     item = {} if is_a? Hash
 
