@@ -14,24 +14,26 @@ module Enumerable
     return to_enum(:my_each_with_index) unless block_given?
 
     i = 0
-    each do |data|
+    my_each do |data|
       yield data, i
 
       i += 1
     end
+    self
   end
 
   # my_select function
   def my_select
-    # filters a given array
-    #  given a filter, return the modified array
     return to_enum(:my_select) unless block_given?
 
-    array = []
-    each do |item|
-      array << item if yield(item)
+    elements = [] if is_a? Array
+    elements = {} if is_a? Hash
+    my_each do |item|
+      next unless yield item
+
+      elements << item
     end
-    array
+    elements
   end
 
   # my_all function
@@ -108,3 +110,7 @@ end
 p [1, 2, 3, 4].count
 h = { foo: 0, bar: 1, baz: 2 }
 p(h.map { |_key, element| element * 2 })
+
+p [1, 2, 3, 4].my_each_with_index { |_item, index| index }
+
+p(h.select { |_key, value| value.even? })
