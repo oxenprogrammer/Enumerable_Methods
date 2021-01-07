@@ -30,32 +30,29 @@ module Enumerable
     array
   end
 
-  def my_all?(arr = nil)
-    return to_enum(:my_all) unless block_given?
-    
-    return true if arr == nil
-
-    count = 0
-    arr.each do |item|
-      if yield(item)
-        return false
-      end
+  def my_all?
+    y=0
+    self.each do |x|
+     y += 1 unless (x==false || x.nil?)
     end
-
-    if count > 0 
-      return false 
-    else  
-      return true
+    if y == self.size 
+      true 
+    else 
+      false
     end
   end
 
 end
 
 #### test normal select
-p %w[ant bear cat].my_all? { |word| word.length >= 3 } #=> true
-p %w[ant bear cat].my_all? { |word| word.length >= 4 } #=> false
-p %w[ant bear cat].my_all?(/t/)                        #=> false
-p [1, 2i, 3.14].my_all?(Numeric)                       #=> true
-p [nil, true, 99].my_all?                              #=> false
-p [].my_all?                                           #=> true
+# p %w[ant bear cat].my_all? { |word| word.length >= 3 } #=> true
+# p %w[ant bear cat].my_all? { |word| word.length >= 4 } #=> false
+# p %w[ant bear cat].my_all?(/t/)                        #=> false
+# p [1, 2i, 3.14].my_all?(Numeric)                       #=> true
+# p [nil, true, 99].my_all?                              #=> false
+# p [].my_all?                                           #=> true
 
+
+my_array = %w[ant bear cat]
+# p [nil, true, 99].my_all?{|block| block.length >= 1}
+p [false].my_all?
