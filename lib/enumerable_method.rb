@@ -59,6 +59,27 @@ module Enumerable
       end
     end
   end
+
+
+  # my_any?
+  def my_any?
+  end
+
+  #my_none?
+  def my_none?
+  end
+
+  #my_count
+  def my_count
+  end
+
+  #my_map
+  def my_map
+  end
+
+  #my_inject
+  def my_inject
+  end
 end
 
 #### test normal select
