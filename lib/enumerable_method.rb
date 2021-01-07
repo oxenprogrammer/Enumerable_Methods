@@ -78,7 +78,15 @@ module Enumerable
   end
 
   # my_map
-  def my_map; end
+  def my_map
+    item = [] if is_a? Array
+    item = {} if is_a? Hash
+
+    my_each do |element|
+      item << yield(element)
+    end
+    item
+  end
 
   # my_inject
   def my_inject; end
@@ -98,3 +106,5 @@ end
 # p [false].my_all?
 
 p [1, 2, 3, 4].count
+h = { foo: 0, bar: 1, baz: 2 }
+p(h.map { |_key, element| element * 2 })
