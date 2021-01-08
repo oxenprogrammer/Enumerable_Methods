@@ -66,19 +66,19 @@ module Enumerable
   def my_none?; end
 
   # my_count
-  def my_count
+  def my_count(obj = nil)
     count = 0
     my_each do |item|
-      if block_given?
+      if obj
+        count += 1 if obj == item
+      elsif block_given?
         count += 1 if yield item
       else
         count += 1
       end
     end
+    count
   end
-
-  # my_map
-  def my_map; end
 
   # my_inject
   def my_inject; end
