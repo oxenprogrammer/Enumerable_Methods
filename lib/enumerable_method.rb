@@ -36,8 +36,20 @@ module Enumerable
   end
 
   # my_all function
-  def my_all?(parameter = nil)
-    if parameter.nil?
+  def my_all?( parameter = nil )
+    if !parameter.nil?
+      if parameter.is_a? Regexp
+        self.each do |item|
+          num = item.to_s
+          return true if num == parameter
+        end
+
+        return false
+      else
+        my_each { |item | return false if !item.is_a?(parameter)}
+        return true
+      end
+    else
       if block_given?
         each do |item|
           return false unless yield(item)
@@ -46,79 +58,118 @@ module Enumerable
         true
       else
         y = 0
-        each do |x|
-          y += 1 unless x == false || x.nil?
+        self.each do |x|
+         y += 1 unless (x==false || x.nil?)
+        end
+        if y == self.size 
+          true 
+        else 
+          false
         end
         y == size
       end
-    else
-      each do |item|
-        return false unless item.is_a?(parameter)
-      end
-
-      true
     end
   end
 
   # my_any?
-  def my_any?; end
+  def my_any?(parameter = nil)
+    # for parameter
+    if parameter != nil
+      count = 0
+      for item in self
+        flag = false if item.class == parameter
+        if flag == false
+          count += 1 
+        end
+      end
 
-  # my_none?
-  def my_none?; end
-
-  # my_count
-  def my_count(obj = nil)
-    count = 0
-    my_each do |item|
-      if obj
-        count += 1 if obj == item
-      elsif block_given?
-        count += 1 if yield item
+      if count > 0
+        return true
       else
-        count += 1
+        return false
+      end
+    # for black_given
+    elsif block_given?
+      self.each do |item| 
+        return true if yield(item)
+      end
+      return false
+
+    # for without block and parameter
+    else
+      self.each do |x|
+       return true unless (x==false || x.nil?)
+      end
+      return false
+    end
+
+  end
+
+  #my_none?
+  def my_none?(p1 = nil)
+    # # self array is empty and there is no parameter and block_given?
+    none = true
+    my_each do |item|
+      if p1
+        none = false if item
+      elsif block_given?
+        none = false if yield(item)
+      elsif item
+        none = false
       end
     end
-    count
+    none
   end
-  
-  # my_map
-  def my_map(proc = nil)
-    return enum_for(:my_map) unless block_given?
 
-    item = [] if is_a? Array
-    item = {} if is_a? Hash
+  #my_count
+  def my_count
+  end
 
-    my_each do |element|
-      item << if proc && proc.instance_of?(proc)
-                proc.call(element)
-              else
-                yield(element)
-              end
+  #my_map
+  def my_map
+  end
+
+  #my_inject
+  def my_inject(p1 = nil, p2 = nil)
+    data = to_a
+    # Through Error if Parameter and block are not given
+    if p1.nil? and p2.nil? and !block_given?
+      return  "Required Block or Parameter"
+    # Block is given and parameter is given but its value is nil
+    elsif p1.nil? and block_given?
+      data.length.times do |item|
+        if item == 0
+          p1 = data[item]
+        else
+          p1 = yield(p1, data[item])
+        end 
+      end
+
+    # Only Block given
+    elsif block_given?
+      data.length.times do |item|
+        p1 = yield(p1, data[item])
+      end
+
+    # Parameter 1 is not nil and parameter 2 is nil
+    elsif p2.nil? and !p1.nil? 
+      p2 = p1
+      data.length.times do |item|
+        if item == 0
+          p1 = arr[0]
+        else
+          p1 = p1.send(p2, arr[item]) 
+        end
+      end
+
+    # Parameter 1 given and Parameter 2 given but equal to Symbol
+    elsif p2.is_a?(Symbol) and !p1.nil?
+      data.length.times do |item|
+        p1 = p1.send(p2, data[item])
+      end
     end
-    item
+
+    p1
   end
-        
-  # my_inject
-  def my_inject; end
+
 end
-
-#### test normal select
-# p %w[ant bear cat].my_all? { |word| word.length >= 3 } #=> true
-# p %w[ant bear cat].my_all? { |word| word.length >= 4 } #=> false
-# p %w[ant bear cat].my_all?(/t/)                        #=> false
-# p [1, 2i, 3.14].my_all?(Numeric)                       #=> true
-# p [nil, true, 99].my_all?                              #=> false
-# p [].my_all?                                           #=> true
-
-# puts /t/.class
-# my_array = %w[ant bear cat]
-# # p [nil, true, 99].my_all?{|block| block.length >= 1}
-# p [false].my_all?
-
-# p [1, 2, 3, 4].count
-# h = { foo: 0, bar: 1, baz: 2 }
-# p([1, 2, 3, 4].my_map { |element| element * 2 })
-
-# p [1, 2, 3, 4].my_each_with_index { |_item, index| index }
-
-# p([1, 2, 3, 4].my_select(&:even?))
