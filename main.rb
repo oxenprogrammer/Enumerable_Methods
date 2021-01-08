@@ -52,7 +52,7 @@ end) #=> {"cat"=>0, "dog"=>1, "wombat"=>2}
 #### Test for my_select
 puts "\n\n ####### my_select ##########"
 p([1, 2, 3, 4, 5].my_select(&:even?)) #=> [2, 4]
-p([1, 2, 3, 4, 5].my_select{ |x| x.even? }) #=> [2, 4]
+p((1..5).my_select(&:even?)) #=> [2, 4]
 
 p '###### Test for Count #########'
 ary = [1, 2, 4, 2]
@@ -62,6 +62,8 @@ p(ary.count(&:even?)) #=> 3
 
 p '##### Test for map #######'
 elements = [1, 2, 3, 4]
+my_proc = proc { |i| i*i }
+p elements.my_map(my_proc)
 p(elements.my_map { |i| i * i }) #=> [1, 4, 9, 16]
 p(elements.my_map { 'cat' }) #=> ["cat", "cat", "cat", "cat"]
 p((1..4).my_map { |i| i * i }) #=> [1, 4, 9, 16]
