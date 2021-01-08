@@ -109,8 +109,10 @@ module Enumerable
   #my_inject
   def my_inject(p1 = nil, p2 = nil)
     data = to_a
+    # Through Error if Parameter and block are not given
     if p1.nil? and p2.nil? and !block_given?
       return  "Required Block or Parameter"
+    # Block is given and parameter is given but its value is nil
     elsif p1.nil? and block_given?
       data.length.times do |item|
         if item == 0
@@ -119,10 +121,14 @@ module Enumerable
           p1 = yield(p1, data[item])
         end 
       end
+
+    # Only Block given
     elsif block_given?
       data.length.times do |item|
         p1 = yield(p1, data[item])
       end
+
+    # Parameter 1 is not nil and parameter 2 is nil
     elsif p2.nil? and !p1.nil? 
       p2 = p1
       data.length.times do |item|
@@ -132,60 +138,16 @@ module Enumerable
           p1 = p1.send(p2, arr[item]) 
         end
       end
+
+    # Parameter 1 given and Parameter 2 given but equal to Symbol
     elsif p2.is_a?(Symbol) and !p1.nil?
       data.length.times do |item|
         p1 = p1.send(p2, data[item])
       end
     end
+
     p1
   end
 end
 
-### test for any
-# p %w[ant bear cat].any? { |word| word.length >= 3 } #=> true
-# p %w[ant bear cat].any? { |word| word.length >= 4 } #=> true
-# p [nil, true, 99].any?                              #=> true
-# p [].any?                                           #=> false
-# p %w[ant bear cat].any?(/d/)                        #=> false
-# p [nil, true, 99].any?(Integer)                     #=> true
-# puts "\n\n"
-# p %w[ant bear cat].my_any? { |word| word.length >= 3 } #=> true
-# p %w[ant bear cat].my_any? { |word| word.length >= 4 } #=> true
-# p [nil, true, 99].my_any?                              #=> true
-# p [].my_any?                                           #=> false
-# p %w[ant bear cat].my_any?(/d/)                        #=> false
-# p [nil, true, 99].my_any?(Integer)                     #=> true
 
-# #### test case of all
-# p %w[ant bear cat].all? { |word| word.length >= 3 } #=> true
-# p %w[ant bear cat].all? { |word| word.length >= 4 } #=> false
-# p [nil, true, 99].all?                              #=> false
-# p [].all?                                           #=> true
-# p %w[ant bear cat].all?(/t/)                        #=> false
-# p [1, 2i, 3.14].all?(Numeric)                       #=> true
-# puts"\n\n"
-# p %w[ant bear cat].my_all? { |word| word.length >= 3 } #=> true
-# p %w[ant bear cat].my_all? { |word| word.length >= 4 } #=> false
-# p [nil, true, 99].my_all?                              #=> false
-# p [].my_all?                                           #=> true
-# p %w[ant bear cat].my_all?(/t/)                        #=> false
-# p [1, 2i, 3.14].my_all?(Numeric)                       #=> true
-
-#### test for injection
-# Same using a block and inject
-# Same using a block
-# find the longest word
-p (5..10).inject { |sum, n| sum + n }            #=> 45
-p (5..10).inject(1) { |product, n| product * n } #=> 151200
-longest = %w{ cat sheep bear }.inject do |memo, word|
-  memo.length > word.length ? memo : word
-end
-p longest                                        #=> "sheep"
-puts "\n\n"
-p (5..10).my_inject            #=> 45
-p (5..10).my_inject { |sum, n| sum + n }            #=> 45
-p (5..10).my_inject(1) { |product, n| product * n } #=> 151200
-longest = %w{ cat sheep bear }.my_inject do |memo, word|
-  memo.length > word.length ? memo : word
-end
-p longest                                        #=> "sheep"
