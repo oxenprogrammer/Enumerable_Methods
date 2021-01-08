@@ -38,17 +38,13 @@ module Enumerable
   # my_all function
   def my_all?(parameter = nil)
     if !parameter.nil?
-      if parameter.is_a? Regexp
-        my_each do |item|
-          num = item.to_s
-          return true if num == parameter
-        end
-
-        false
-      else
-        my_each { |item| return false unless item.is_a?(parameter) }
-        true
+      flag = true
+      if parameter.class == Class
+        my_each { |i| flag = false unless parameter === i }
+      elsif parameter.class == Regexp
+        my_each { |i| flag = false unless parameter.match? i }
       end
+      flag
     else
       if block_given?
         each do |item|
@@ -71,18 +67,13 @@ module Enumerable
   def my_any?(parameter = nil)
     # for parameter
     if !parameter.nil?
-      count = 0
-      for item in self
-        flag = false if item.class == parameter
-        count += 1 if flag == false
-
+      flag = false
+      if parameter.class == Class
+        my_each { |i| flag = true if parameter === i }
+      elsif parameter.class == Regexp
+        my_each { |i| flag = true if parameter.match? i }
       end
-
-      if count.positive?
-        true
-      else
-        false
-      end
+    flag
     # for black_given
     elsif block_given?
       my_each do |element|
