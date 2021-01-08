@@ -39,9 +39,9 @@ module Enumerable
   def my_all?(parameter = nil)
     if !parameter.nil?
       flag = true
-      if parameter.class == Class
+      if parameter.class.instance_of? Class
         my_each { |i| flag = false unless parameter === i }
-      elsif parameter.class == Regexp
+      elsif parameter.instance_of? Regexp
         my_each { |i| flag = false unless parameter.match? i }
       end
       flag
@@ -68,12 +68,12 @@ module Enumerable
     # for parameter
     if !parameter.nil?
       flag = false
-      if parameter.class == Class
+      if parameter.instance_of? Class
         my_each { |i| flag = true if parameter === i }
-      elsif parameter.class == Regexp
+      elsif parameter.instance_of? Regexp
         my_each { |i| flag = true if parameter.match? i }
       end
-    flag
+      flag
     # for black_given
     elsif block_given?
       my_each do |element|
@@ -94,31 +94,25 @@ module Enumerable
   def my_none?(parameter = nil)
     # for parameter
     if !parameter.nil?
-      if parameter.class == Regexp
+      if parameter.instance_of? Regexp
         return (my_select { |item| item.match(parameter) }).length.zero? if parameter.is_a? Regexp
       else
         count = 0
         for item in self
-          flag = false if item.class == parameter
-          if flag == false
-            count += 1 
-          end
+          flag = false if item.instance_of? parameter
+          count += 1 if flag == false
         end
-
-        if count > 0
-          return false
+        if count.positive?
+          false
         else
-          return true
+          true
         end
       end
-    # for black_given
     elsif block_given?
       my_each do |element|
         return false if yield(element)
       end
       true
-
-    # for without block and parameter
     else
       my_each do |x|
         return false unless x == false || x.nil?
