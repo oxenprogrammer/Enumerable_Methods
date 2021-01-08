@@ -123,18 +123,18 @@ module Enumerable
       data.length.times do |item|
         p1 = yield(p1, data[item])
       end
-    elsif !p1.nil? && p2.nil?
+    elsif p2.nil? and !p1.nil? 
       p2 = p1
       data.length.times do |item|
         if item == 0
           p1 = arr[0]
         else
-          p1 = p1.send(param, arr[item]) 
+          p1 = p1.send(p2, arr[item]) 
         end
       end
     elsif !p1.nil? && p2.is_a?(Symbol)
       data.length.times do |item|
-        p1 = p1.send(param, data[item])
+        p1 = p1.send(p2, data[item])
       end
     end
     p1
