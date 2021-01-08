@@ -33,11 +33,17 @@ module Enumerable
 
   # my_all function
   def my_all?( parameter = nil )
-    if parameter != nil
-      for item in self
-        return false unless item.kind_of?(parameter)
+    if !parameter.nil?
+      if parameter.is_a? Regexp
+        self.each do |item|
+          num = item.to_s
+          return true if num == parameter
+        end
+        return false
+      else
+        my_each { |item | return false if !item.is_a?(parameter)}
+        return true
       end
-      return true
     else
       if block_given?
         self.each do |item| 
@@ -50,6 +56,7 @@ module Enumerable
         self.each do |x|
          y += 1 unless (x==false || x.nil?)
         end
+
         if y == self.size 
           true 
         else 
@@ -95,7 +102,19 @@ module Enumerable
   end
 
   #my_none?
-  def my_none?
+  def my_none?(p1 = nil)
+    # # self array is empty and there is no parameter and block_given?
+    none = true
+    my_each do |item|
+      if obj
+        none = false if item
+      elsif block_given?
+        none = false if yield(item)
+      elsif item
+        none = false
+      end
+    end
+    none
   end
 
   #my_count
@@ -148,6 +167,5 @@ module Enumerable
 
     p1
   end
+
 end
-
-
