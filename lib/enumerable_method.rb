@@ -103,15 +103,22 @@ module Enumerable
   def my_none?(parameter = nil)
     # for parameter
     if !parameter.nil?
-      count = 0
-      for item in self
-        flag = false if item.class == parameter
-        count += 1 if flag == false
-      end
-      if count.positive?
-        false
+      if parameter.class == Regexp
+        return (my_select { |item| item.match(parameter) }).length.zero? if parameter.is_a? Regexp
       else
-        true
+        count = 0
+        for item in self
+          flag = false if item.class == parameter
+          if flag == false
+            count += 1 
+          end
+        end
+
+        if count > 0
+          return false
+        else
+          return true
+        end
       end
     # for black_given
     elsif block_given?
