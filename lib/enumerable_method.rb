@@ -132,7 +132,7 @@ module Enumerable
           p1 = p1.send(p2, arr[item]) 
         end
       end
-    elsif !p1.nil? && p2.is_a?(Symbol)
+    elsif p2.is_a?(Symbol) and !p1.nil?
       data.length.times do |item|
         p1 = p1.send(p2, data[item])
       end
