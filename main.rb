@@ -1,4 +1,4 @@
-require_relative 'lib/enumerable_method.rb'
+require_relative 'lib/enumerable_method'
 
 # ## test for any
 # p %w[ant bear cat].any? { |word| word.length >= 3 } #=> true
@@ -46,20 +46,19 @@ require_relative 'lib/enumerable_method.rb'
 # end
 # p longest                                        #=> "sheep"
 
-
 ### Test for my_none
-p %w{ant bear cat}.none? { |word| word.length == 5 } #=> true
-p %w{ant bear cat}.none? { |word| word.length >= 4 } #=> false
-p %w{ant bear cat}.none?(/d/)                        #=> true
+p %w[ant bear cat].none? { |word| word.length == 5 } #=> true
+p %w[ant bear cat].none? { |word| word.length >= 4 } #=> false
+p %w[ant bear cat].none?(/d/)                        #=> true
 p [1, 3.14, 42].none?(Float)                         #=> false
 p [].none?                                           #=> true
 p [nil].none?                                        #=> true
 p [nil, false].none?                                 #=> true
 p [nil, false, true].none?                           #=> false
 puts "\n\n"
-p %w{ant bear cat}.my_none? { |word| word.length == 5 } #=> true
-p %w{ant bear cat}.my_none? { |word| word.length >= 4 } #=> false
-p %w{ant bear cat}.my_none?(/d/)                        #=> true
+p %w[ant bear cat].my_none? { |word| word.length == 5 } #=> true
+p %w[ant bear cat].my_none? { |word| word.length >= 4 } #=> false
+p %w[ant bear cat].my_none?(/d/)                        #=> true
 p [1, 3.14, 42].my_none?(Float)                         #=> false
 p [].my_none?                                           #=> true
 p [nil].my_none?                                        #=> true
@@ -69,3 +68,8 @@ p [nil, false, true].my_none?                           #=> false
 # p "\n\n"
 # [nil, false,true].num?
 
+p '############### Test for Count'
+ary = [1, 2, 4, 2]
+p(ary.count) #=> 4
+p(ary.count(2)) #=> 2
+p(ary.count(&:even?)) #=> 3
