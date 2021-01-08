@@ -40,3 +40,24 @@ p [nil].my_none?                                        #=> true
 p [nil, false].my_none?                                 #=> true
 p [nil, false, true].my_none?                           #=> false
 
+#### Test for my_each_with_index
+puts "\n\n my_each_with_index"
+hash = Hash.new
+p %w(cat dog wombat).my_each_with_index { |item, index|
+  hash[item] = index
+} #=> {"cat"=>0, "dog"=>1, "wombat"=>2}
+
+#### Test for my_select
+puts "\n\n my_select"
+p [1,2,3,4,5].my_select { |num|  num.even?  }   #=> [2, 4]
+
+#### Test for my_count
+puts "\n\n my_count"
+ary = [1, 2, 4, 2]
+p ary.my_count               #=> 4
+p ary.my_count(2)            #=> 2
+p ary.my_count{ |x| x%2==0 } #=> 3
+
+#### Test for my_map
+puts "\n\n my_map"
+p [1,2,3,4].my_map { |i| i*i }      #=> [1, 4, 9, 16]
