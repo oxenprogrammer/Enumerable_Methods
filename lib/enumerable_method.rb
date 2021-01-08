@@ -64,7 +64,19 @@ module Enumerable
   def my_any?; end
 
   # my_none?
-  def my_none?; end
+  def my_none?(obj = nil)
+    none = true
+    my_each do |item|
+      if obj
+        none = false if item
+      elsif block_given?
+        none = false if yield(item)
+      elsif item
+        none = false
+      end
+    end
+    none
+  end
 
   # my_count
   def my_count(obj = nil)
@@ -80,7 +92,7 @@ module Enumerable
     end
     count
   end
-  
+
   # my_map
   def my_map(proc = nil)
     return enum_for(:my_map) unless block_given?
@@ -97,7 +109,7 @@ module Enumerable
     end
     item
   end
-        
+
   # my_inject
   def my_inject; end
 end
@@ -122,3 +134,12 @@ end
 # p [1, 2, 3, 4].my_each_with_index { |_item, index| index }
 
 # p([1, 2, 3, 4].my_select(&:even?))
+
+p(%w[ant bear cat].my_none? { |word| word.length == 5 }) #=> true
+p(%w[ant bear cat].my_none? { |word| word.length >= 4 }) #=> false
+p(%w[ant bear cat].my_none?(/d/)) #=> true
+p([1, 3.14, 42].my_none?(Float)) #=> false
+p([].my_none?) #=> true
+p([nil].my_none?) #=> true
+p([nil, false].my_none?)                                 #=> true
+p([nil, false, true].my_none?)                           #=> false
