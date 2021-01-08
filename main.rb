@@ -63,7 +63,7 @@ p(ary.count(&:even?)) #=> 3
 
 p '##### Test for map #######'
 elements = [1, 2, 3, 4]
-my_proc = proc { |i| i*i }
+my_proc = proc { |i| i * i }
 p elements.my_map(my_proc)
 p(elements.my_map { |i| i * i }) #=> [1, 4, 9, 16]
 p(elements.my_map { 'cat' }) #=> ["cat", "cat", "cat", "cat"]
