@@ -29,7 +29,7 @@ module Enumerable
 
     elements = [] if is_a? Array
     my_each do |item|
-      elements << item if yield item
+      elements << item if yield(item)
     end
     elements
   end
@@ -107,8 +107,6 @@ module Enumerable
         flag = false if item.class == parameter
         count += 1 if flag == false
       end
-
-      # return false if count.positive? else true
       if count.positive?
         false
       else
