@@ -21,7 +21,7 @@ p [1, 2i, 3.14].my_all?(Numeric)                       #=> true
 #### test for my_inject
 puts "\n\n my_inject"
 test_inject = (5..10)
-p(test_inject.my_inject) #=> fail silently
+# p(test_inject.my_inject) #=> fail silently
 p(test_inject.my_inject { |sum, n| sum + n }) #=> 45
 p(test_inject.my_inject(1) do |product, n|
   product * n
