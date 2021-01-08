@@ -4,7 +4,7 @@ module Enumerable
   def my_each(&block)
     return enum_for(:my_each) unless block_given?
 
-    each do |item|
+    for item in self
       block.call item
     end
     self
@@ -28,7 +28,6 @@ module Enumerable
     return to_enum(:my_select) unless block_given?
 
     elements = [] if is_a? Array
-    elements = {} if is_a? Hash
     my_each do |item|
       elements << item if yield item
     end
@@ -36,18 +35,18 @@ module Enumerable
   end
 
   # my_all function
-  def my_all?( parameter = nil )
+  def my_all?(parameter = nil)
     if !parameter.nil?
       if parameter.is_a? Regexp
-        self.each do |item|
+        my_each do |item|
           num = item.to_s
           return true if num == parameter
         end
 
-        return false
+        false
       else
-        my_each { |item | return false if !item.is_a?(parameter)}
-        return true
+        my_each { |item| return false unless item.is_a?(parameter) }
+        true
       end
     else
       if block_given?
@@ -58,14 +57,10 @@ module Enumerable
         true
       else
         y = 0
-        self.each do |x|
-         y += 1 unless (x==false || x.nil?)
+        my_each do |x|
+          y += 1 unless x == false || x.nil?
         end
-        if y == self.size 
-          true 
-        else 
-          false
-        end
+        true if y == size
         y == size
       end
     end
@@ -78,67 +73,64 @@ module Enumerable
       count = 0
       for item in self
         flag = false if item.class == parameter
-        if flag == false
-          count += 1 
-        end
+        count += 1 if flag == false
+
       end
 
-      if count > 0
-        return true
+      if count.positive?
+        true
       else
-        return false
+        false
       end
     # for black_given
     elsif block_given?
-      self.each do |item| 
-        return true if yield(item)
+      my_each do |element|
+        return true if yield(element)
       end
-      return false
+      false
 
     # for without block and parameter
     else
-      self.each do |x|
-       return true unless (x==false || x.nil?)
+      my_each do |x|
+        return true unless x == false || x.nil?
       end
-      return false
+      false
     end
-
   end
 
-  #my_none?
+  # my_none?
   def my_none?(parameter = nil)
     # for parameter
-    if parameter != nil
+    if !parameter.nil?
       count = 0
       for item in self
         flag = false if item.class == parameter
-        if flag == false
-          count += 1 
-        end
+        count += 1 if flag == false
       end
 
-      if count > 0
-        return false
+      # return false if count.positive? else true
+      if count.positive?
+        false
       else
-        return true
+        true
       end
     # for black_given
     elsif block_given?
-      self.each do |item| 
-        return false if yield(item)
+      my_each do |element|
+        return false if yield(element)
       end
-      return true
+      true
 
     # for without block and parameter
     else
-      self.each do |x|
-       return false unless (x==false || x.nil?)
+      my_each do |x|
+        return false unless x == false || x.nil?
       end
-      return true
+      true
     end
   end
 
-   # my_count
+  # my_count
   def my_count(obj = nil)
     count = 0
     my_each do |item|
@@ -152,13 +144,12 @@ module Enumerable
     end
     count
   end
-  
+
   # my_map
   def my_map(proc = nil)
     return enum_for(:my_map) unless block_given?
 
     item = [] if is_a? Array
-    item = {} if is_a? Hash
 
     my_each do |element|
       item << if proc && proc.instance_of?(proc)
@@ -170,20 +161,17 @@ module Enumerable
     item
   end
 
-  #my_inject
+  # my_inject
   def my_inject(p1 = nil, p2 = nil)
     data = to_a
     # Through Error if Parameter and block are not given
-    if p1.nil? and p2.nil? and !block_given?
-      return  "Required Block or Parameter"
+    if p1.nil? && p2.nil? && !block_given?
+      return  'Required Block or Parameter'
     # Block is given and parameter is given but its value is nil
-    elsif p1.nil? and block_given?
+    elsif p1.nil? && block_given?
       data.length.times do |item|
-        if item == 0
-          p1 = data[item]
-        else
-          p1 = yield(p1, data[item])
-        end 
+        p1 = data[item] if item.zero?
+        p1 = yield(p1, data[item]) unless item.zero?
       end
 
     # Only Block given
@@ -193,18 +181,15 @@ module Enumerable
       end
 
     # Parameter 1 is not nil and parameter 2 is nil
-    elsif p2.nil? and !p1.nil? 
+    elsif p2.nil? && !p1.nil?
       p2 = p1
       data.length.times do |item|
-        if item == 0
-          p1 = arr[0]
-        else
-          p1 = p1.send(p2, arr[item]) 
-        end
+        p1 = data[0] if item.zero?
+        p1 = p1.send(p2, data[item]) unless item.zero?
       end
 
     # Parameter 1 given and Parameter 2 given but equal to Symbol
-    elsif p2.is_a?(Symbol) and !p1.nil?
+    elsif p2.is_a?(Symbol) && !p1.nil?
       data.length.times do |item|
         p1 = p1.send(p2, data[item])
       end
@@ -212,5 +197,4 @@ module Enumerable
 
     p1
   end
-
 end
