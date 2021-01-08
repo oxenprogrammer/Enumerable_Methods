@@ -108,25 +108,36 @@ module Enumerable
 
   #my_inject
   def my_inject(p1 = nil, p2 = nil)
-    if block_given?
-      if(p1 != nil)
-        sum = p1
-      else
-        sum = 0
+    data = to_a
+    if p1.nil? and p2.nil? and !block_given?
+      return  "Required Block or Parameter"
+    elsif p1.nil? and block_given?
+      data.length.times do |item|
+        if item == 0
+          p1 = data[item]
+        else
+          p1 = yield(p1, data[item])
+        end 
       end
-
-      data = self.class == Range ? to_a : self 
-      data.each do |num|
-        sum = yield(sum, num)
+    elsif block_given?
+      data.length.times do |item|
+        p1 = yield(p1, data[item])
       end
-      
-      sum
-    elsif self.class == String && block_given?
-      acc = p1
-      my_each do |x|
-        acc = acc.send(p2, x)
+    elsif !p1.nil? && p2.nil?
+      p2 = p1
+      data.length.times do |item|
+        if item == 0
+          p1 = arr[0]
+        else
+          p1 = p1.send(param, arr[item]) 
+        end
+      end
+    elsif !p1.nil? && p2.is_a?(Symbol)
+      data.length.times do |item|
+        p1 = p1.send(param, data[item])
       end
     end
+    p1
   end
 end
 
@@ -171,6 +182,7 @@ longest = %w{ cat sheep bear }.inject do |memo, word|
 end
 p longest                                        #=> "sheep"
 puts "\n\n"
+p (5..10).my_inject            #=> 45
 p (5..10).my_inject { |sum, n| sum + n }            #=> 45
 p (5..10).my_inject(1) { |product, n| product * n } #=> 151200
 longest = %w{ cat sheep bear }.my_inject do |memo, word|
