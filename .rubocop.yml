@@ -1,7 +1,5 @@
 Style/FrozenStringLiteralComment:
   Enabled: false
-Style/ClassEqualityComparison:
-  Enabled: false
 Style/IfInsideElse:
   Enabled: false
 Metrics/LineLength:
