@@ -27,7 +27,8 @@ module Enumerable
   def my_select
     return to_enum(:my_select) unless block_given?
 
-    elements = [] if is_a? Array
+    to_a if self.class.instance_of? Range
+    elements = []
     my_each do |item|
       elements << item if yield item
     end
