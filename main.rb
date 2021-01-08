@@ -64,3 +64,5 @@ p '##### Test for map #######'
 elements = [1, 2, 3, 4]
 p(elements.my_map { |i| i * i }) #=> [1, 4, 9, 16]
 p(elements.my_map { 'cat' }) #=> ["cat", "cat", "cat", "cat"]
+p((1..4).my_map { |i| i * i }) #=> [1, 4, 9, 16]
+p((1..4).my_map { 'cat' }) #=> ["cat", "cat", "cat", "cat"]
