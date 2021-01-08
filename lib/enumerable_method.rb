@@ -148,13 +148,13 @@ module Enumerable
 
   # my_map
   def my_map(proc = nil)
-    return enum_for(:my_map) unless block_given?
+    return enum_for(:my_map) unless block_given? && proc.nil?
 
     to_a if self.class.instance_of? Range
     item = []
 
     my_each do |element|
-      item << if proc && proc.instance_of?(proc)
+      item << if proc.nil? && proc.instance_of?(Proc)
                 proc.call(element)
               else
                 yield(element)
