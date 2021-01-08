@@ -27,7 +27,8 @@ module Enumerable
   def my_select
     return to_enum(:my_select) unless block_given?
 
-    elements = [] if is_a? Array
+    to_a if self.class.instance_of? Range
+    elements = []
     my_each do |item|
       elements << item if yield(item)
     end
@@ -147,7 +148,8 @@ module Enumerable
   def my_map(proc = nil)
     return enum_for(:my_map) unless block_given?
 
-    item = [] if is_a? Array
+    to_a if self.class.instance_of? Range
+    item = []
 
     my_each do |element|
       item << if proc && proc.instance_of?(proc)
