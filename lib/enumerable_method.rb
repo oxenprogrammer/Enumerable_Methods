@@ -106,19 +106,36 @@ module Enumerable
   end
 
   #my_none?
-  def my_none?(p1 = nil)
-    # # self array is empty and there is no parameter and block_given?
-    none = true
-    my_each do |item|
-      if p1
-        none = false if item
-      elsif block_given?
-        none = false if yield(item)
-      elsif item
-        none = false
+  def my_none?(parameter = nil)
+    # for parameter
+    if parameter != nil
+      count = 0
+      for item in self
+        flag = false if item.class == parameter
+        if flag == false
+          count += 1 
+        end
       end
+
+      if count > 0
+        return false
+      else
+        return true
+      end
+    # for black_given
+    elsif block_given?
+      self.each do |item| 
+        return false if yield(item)
+      end
+      return true
+
+    # for without block and parameter
+    else
+      self.each do |x|
+       return false unless (x==false || x.nil?)
+      end
+      return true
     end
-    none
   end
 
    # my_count
