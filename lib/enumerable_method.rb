@@ -30,7 +30,7 @@ module Enumerable
     to_a if self.class.instance_of? Range
     elements = []
     my_each do |item|
-      elements << item if yield item
+      elements << item if yield(item)
     end
     elements
   end
@@ -108,8 +108,6 @@ module Enumerable
         flag = false if item.class == parameter
         count += 1 if flag == false
       end
-
-      # return false if count.positive? else true
       if count.positive?
         false
       else
