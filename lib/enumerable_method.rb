@@ -121,12 +121,36 @@ module Enumerable
     none
   end
 
-  #my_count
-  def my_count
+   # my_count
+  def my_count(obj = nil)
+    count = 0
+    my_each do |item|
+      if obj
+        count += 1 if obj == item
+      elsif block_given?
+        count += 1 if yield item
+      else
+        count += 1
+      end
+    end
+    count
   end
+  
+  # my_map
+  def my_map(proc = nil)
+    return enum_for(:my_map) unless block_given?
 
-  #my_map
-  def my_map
+    item = [] if is_a? Array
+    item = {} if is_a? Hash
+
+    my_each do |element|
+      item << if proc && proc.instance_of?(proc)
+                proc.call(element)
+              else
+                yield(element)
+              end
+    end
+    item
   end
 
   #my_inject
