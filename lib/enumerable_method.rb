@@ -1,34 +1,38 @@
+# This is our custom fake enumerables
 module Enumerable
- # my_each
-  def my_each
+  # my_each
+  def my_each(&block)
     return enum_for(:my_each) unless block_given?
-    each do |param|
-      yield param
+
+    each do |item|
+      block.call item
     end
+    self
   end
 
-  #my_each_with_index
+  # my_each_with_index
   def my_each_with_index
     return to_enum(:my_each_with_index) unless block_given?
+
     i = 0
-    each do |data|
+    my_each do |data|
       yield data, i
 
       i += 1
     end
+    self
   end
 
   # my_select function
   def my_select
-    # filters a given array
-    #  given a filter, return the modified array
     return to_enum(:my_select) unless block_given?
 
-    array = []
-    each do |item|
-      array << item  if yield(item)
+    elements = [] if is_a? Array
+    elements = {} if is_a? Hash
+    my_each do |item|
+      elements << item if yield item
     end
-    array
+    elements
   end
 
   # my_all function
@@ -39,6 +43,7 @@ module Enumerable
           num = item.to_s
           return true if num == parameter
         end
+
         return false
       else
         my_each { |item | return false if !item.is_a?(parameter)}
@@ -46,26 +51,25 @@ module Enumerable
       end
     else
       if block_given?
-        self.each do |item| 
+        each do |item|
           return false unless yield(item)
         end
 
-        return true
+        true
       else
-        y=0
+        y = 0
         self.each do |x|
          y += 1 unless (x==false || x.nil?)
         end
-
         if y == self.size 
           true 
         else 
           false
         end
+        y == size
       end
     end
   end
-
 
   # my_any?
   def my_any?(parameter = nil)
@@ -106,7 +110,7 @@ module Enumerable
     # # self array is empty and there is no parameter and block_given?
     none = true
     my_each do |item|
-      if obj
+      if p1
         none = false if item
       elsif block_given?
         none = false if yield(item)
