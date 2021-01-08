@@ -69,7 +69,7 @@ module Enumerable
   # my_any?
   def my_any?(parameter = nil)
     # for parameter
-    if parameter != nil
+    if !parameter.nil?
       count = 0
       for item in self
         flag = false if item.class == parameter
@@ -162,39 +162,39 @@ module Enumerable
   end
 
   # my_inject
-  def my_inject(p1 = nil, p2 = nil)
+  def my_inject(pa1 = nil, pa2 = nil)
     data = to_a
     # Through Error if Parameter and block are not given
-    if p1.nil? && p2.nil? && !block_given?
+    if pa1.nil? && pa2.nil? && !block_given?
       return  'Required Block or Parameter'
     # Block is given and parameter is given but its value is nil
-    elsif p1.nil? && block_given?
+    elsif pa1.nil? && block_given?
       data.length.times do |item|
-        p1 = data[item] if item.zero?
-        p1 = yield(p1, data[item]) unless item.zero?
+        pa1 = data[item] if item.zero?
+        pa1 = yield(pa1, data[item]) unless item.zero?
       end
 
     # Only Block given
     elsif block_given?
       data.length.times do |item|
-        p1 = yield(p1, data[item])
+        pa1 = yield(pa1, data[item])
       end
 
     # Parameter 1 is not nil and parameter 2 is nil
-    elsif p2.nil? && !p1.nil?
-      p2 = p1
+    elsif pa2.nil? && !pa1.nil?
+      pa2 = pa1
       data.length.times do |item|
-        p1 = data[0] if item.zero?
-        p1 = p1.send(p2, data[item]) unless item.zero?
+        pa1 = data[0] if item.zero?
+        pa1 = pa1.send(pa2, data[item]) unless item.zero?
       end
 
     # Parameter 1 given and Parameter 2 given but equal to Symbol
-    elsif p2.is_a?(Symbol) && !p1.nil?
+    elsif pa2.is_a?(Symbol) && !pa1.nil?
       data.length.times do |item|
-        p1 = p1.send(p2, data[item])
+        pa1 = pa1.send(pa2, data[item])
       end
     end
 
-    p1
+    pa1
   end
 end

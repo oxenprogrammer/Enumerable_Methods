@@ -23,7 +23,9 @@ puts "\n\n my_inject"
 test_inject = (5..10)
 p(test_inject.my_inject) #=> fail silently
 p(test_inject.my_inject { |sum, n| sum + n }) #=> 45
-p(test_inject.my_inject(1) { |product, n| product * n }) #=> 151200
+p(test_inject.my_inject(1) do |product, n|
+  product * n
+end) #=> 151200
 longest = %w[cat sheep bear].my_inject do |memo, word|
   memo.length > word.length ? memo : word
 end
@@ -43,13 +45,13 @@ p [nil, false, true].my_none?                           #=> false
 #### Test for my_each_with_index
 puts "\n\n########## my_each_with_index ##############"
 hash = {}
-p(%w[cat dog wombat].my_each_with_index { |item, index|
+p(%w[cat dog wombat].my_each_with_index do |item, index|
   hash[item] = index
-}) #=> {"cat"=>0, "dog"=>1, "wombat"=>2}
+end) #=> {"cat"=>0, "dog"=>1, "wombat"=>2}
 
 #### Test for my_select
 puts "\n\n ####### my_select ##########"
-p([1, 2, 3, 4, 5].my_select { |num| num.even? }) #=> [2, 4]
+p([1, 2, 3, 4, 5].my_select(&:even?)) #=> [2, 4]
 
 p '###### Test for Count #########'
 ary = [1, 2, 4, 2]
@@ -59,5 +61,5 @@ p(ary.count(&:even?)) #=> 3
 
 p '##### Test for map #######'
 elements = [1, 2, 3, 4]
-p(elements.map { |i| i * i }) #=> [1, 4, 9, 16]
-p(elements.collect { 'cat' })  #=> ["cat", "cat", "cat", "cat"]
+p(elements.my_map { |i| i * i }) #=> [1, 4, 9, 16]
+p(elements.my_map { 'cat' }) #=> ["cat", "cat", "cat", "cat"]
