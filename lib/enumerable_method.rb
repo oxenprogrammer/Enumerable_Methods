@@ -168,7 +168,7 @@ module Enumerable
     data = to_a
     # Through Error if Parameter and block are not given
     if pa1.nil? && pa2.nil? && !block_given?
-      return  'Required Block or Parameter'
+      raise LocalJumpError
     # Block is given and parameter is given but its value is nil
     elsif pa1.nil? && block_given?
       data.length.times do |item|
