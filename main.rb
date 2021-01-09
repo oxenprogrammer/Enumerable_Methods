@@ -8,6 +8,7 @@ p [nil, true, 99].my_any?                              #=> true
 p [].my_any?                                           #=> false
 p %w[ant bear cat].my_any?(/d/)                        #=> false
 p [nil, true, 99].my_any?(Integer)                     #=> true
+p %w[ant bear cat].my_any?('bear')                     #=> true
 
 #### test case of my_all
 puts "\n\n my_all"
@@ -43,6 +44,7 @@ p [].my_none?                                           #=> true
 p [nil].my_none?                                        #=> true
 p [nil, false].my_none?                                 #=> true
 p [nil, false, true].my_none?                           #=> false
+p %w[ant bear cat].my_none?('top') #=> true
 
 #### Test for my_each_with_index
 puts "\n\n########## my_each_with_index ##############"

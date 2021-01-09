@@ -72,6 +72,8 @@ module Enumerable
         my_each { |i| flag = true if parameter === i }
       elsif parameter.instance_of? Regexp
         my_each { |i| flag = true if parameter.match? i }
+      else
+        my_each { |item| flag = true if parameter == item }
       end
       flag
     # for black_given
@@ -96,7 +98,7 @@ module Enumerable
     if !parameter.nil?
       if parameter.instance_of? Regexp
         return (my_select { |item| item.match(parameter) }).length.zero? if parameter.is_a? Regexp
-      else
+      elsif parameter.instance_of? Class
         count = 0
         for item in self
           flag = false if item.instance_of? parameter
@@ -107,6 +109,10 @@ module Enumerable
         else
           true
         end
+      else
+        flag = true
+        my_each { |i| flag = false if parameter == i }
+        flag
       end
     elsif block_given?
       my_each do |element|
@@ -188,5 +194,9 @@ module Enumerable
     end
 
     pa1
+  end
+
+  def multiply_els(para)
+    para.my_inject { |num1, num2| num1 * num2 }
   end
 end
