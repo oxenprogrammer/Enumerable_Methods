@@ -101,6 +101,36 @@ describe Enumerable do
       expect(my_range.my_each_with_index { |item| item * 2 }).to eql(my_range.each_with_index { |item| item * 2 })
     end
   end
+
+  describe '#my_all?' do
+    it 'would return true if there\'s no block' do
+      expect(data.my_all?).to eql(true)
+    end
+
+    it 'would return true when all value is true in array' do
+      expect(data.my_all? { |item| item > 0 }).to eql(true)
+    end
+
+    it 'would return false when one of the value is false in array' do
+      expect(data.my_all? { |item| item > 2 }).to eql(false)
+    end
+
+    it 'would return true when all of the value in range is true' do
+      expect(my_range.my_all? { |item| item > 0 }).to eql(true)
+    end
+
+    it 'return false when one of the value is false in range' do
+      expect(my_range.my_all? { |item| item > 2 }).to eql(false)
+    end
+
+    it 'return true when all value in hash is true' do
+      expect(hashdata.my_all? { |item| item.length > 1}).to eql(true)
+    end
+
+    it 'return false when one of the value in hash is false' do
+      expect(hashdata.my_all? { |item| item == 2 }).to eql(false)
+    end
+  end
 end
 # rubocop:enable Layout/LineLength
 # rubocop:enable Metrics/BlockLength
