@@ -32,4 +32,26 @@ describe Enumerable do
       expect([1, 2, 3, 4].my_select { |item| item > 2 }).to eql([1, 2, 3, 4].select { |item| item > 2 })
     end
   end
+
+  describe '#my_any?' do
+    it 'it check if there false element in an array' do
+      expect([1, 2, 3, false, 4].my_any?).to eql([1, 2, 3, false, 4].any?)
+    end
+
+    it 'check if there\'s a symbol in an array' do
+      expect([1, :none, 2].my_any? { |item| item.is_a?(Symbol) }).to eql([1, :none, 2].any? { |item| item.is_a?(Symbol) })
+    end
+
+    it 'check if there\'s a falsy element' do
+      expect([1, 2, false].my_any?(false)).to eql([1, 2, false].my_any?(false))
+    end
+
+    it 'check if there\'s a true element' do
+      expect([1, 2, true].my_any?(true)).to eql([1, 2, true].my_any?(true))
+    end
+
+    it 'check if there\'s a specific string' do
+      expect([1, 2, 'npm'].my_any?('npm')).to eql([1, 2, 'npm'].my_any?('npm'))
+    end
+  end
 end
