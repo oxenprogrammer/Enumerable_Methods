@@ -16,6 +16,6 @@ describe Enumerable do
 
     it 'would loop throud in array in execute the block statements on each item' do
       expect(my_range.my_each { |item| p item * 2 }).to eql(my_range.each { |item| p item * 2 })
-    end 
+    end
   end
 end
