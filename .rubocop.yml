@@ -24,4 +24,5 @@ Metrics/BlockNesting:
   Enabled: false
 Lint/RedundantWithIndex:
   Enabled: false
-  
+Style/BlockComments:
+  Enabled: false
