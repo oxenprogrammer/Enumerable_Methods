@@ -10,12 +10,26 @@ describe Enumerable do
     end
 
     it 'would return the operation in the block when received a block' do
-      expect([1, 2, 3, 4, 5].my_each { |item| item > 2 }).to eql([1, 2, 3, 4, 5])
+      expect([1, 2, 3, 4, 5].my_each { |item| p item }).to eql([1, 2, 3, 4, 5])
       # since each don't mutate the original array
     end
 
     it 'would loop throud in array in execute the block statements on each item' do
       expect(my_range.my_each { |item| p item * 2 }).to eql(my_range.each { |item| p item * 2 })
+    end
+  end
+
+  describe '#my_select' do
+    it 'would return the operation in the block when received a block' do
+      expect([1, 2, 3, 4].my_select { |item| item > 2 }).to eql([3, 4])
+    end
+
+    it 'would return Enumarable if there\'s no block' do
+      expect([1, 2, 3, 4, 5].my_select).to be_an(Enumerator)
+    end
+
+    it 'would return the same thing as the original select method' do
+      expect([1, 2, 3, 4].my_select { |item| item > 2 }).to eql([1, 2, 3, 4].select { |item| item > 2 })
     end
   end
 end
