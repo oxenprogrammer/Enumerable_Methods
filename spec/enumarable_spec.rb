@@ -5,6 +5,8 @@
 require '../lib/enumerable_method'
 
 describe Enumerable do
+  let(:data) { Array.new([1, 2, 3, 4, 5]) }
+  let(:hashdata) { [a: 'yay', b: 'nay'] }
   let(:my_range) { Range.new(1, 10) }
   describe '#my_each' do
     it 'would return Enumarator if there\'s no block' do
@@ -12,12 +14,12 @@ describe Enumerable do
     end
 
     it 'would return the operation in the block when received a block' do
-      expect([1, 2, 3, 4, 5].my_each { |item| p item }).to eql([1, 2, 3, 4, 5])
+      expect([1, 2, 3, 4, 5].my_each { |item| item }).to eql([1, 2, 3, 4, 5])
       # since each don't mutate the original array
     end
 
     it 'would loop throud in array in execute the block statements on each item' do
-      expect(my_range.my_each { |item| p item * 2 }).to eql(my_range.each { |item| p item * 2 })
+      expect(my_range.my_each { |item| item * 2 }).to eql(my_range)
     end
   end
 
@@ -82,6 +84,21 @@ describe Enumerable do
 
     it 'return an array from an array and apply a block statement to the array' do
       expect([1, 2, 3, 4].my_map { |item| item * 1 }).to eql([1, 2, 3, 4])
+    end
+  end
+
+  describe '#my_each_with_index' do
+    it 'would return Enumarator if there\'s no block' do
+      expect([1, 2, 3, 4, 5].my_each_with_index).to be_an(Enumerator)
+    end
+
+    it 'would return the operation in the block when received a block' do
+      expect([1, 2, 3, 4, 5].my_each_with_index { |item| item }).to eql([1, 2, 3, 4, 5])
+      # since each don't mutate the original array
+    end
+
+    it 'would loop throud in array in execute the block statements on each item' do
+      expect(my_range.my_each_with_index { |item| item * 2 }).to eql(my_range.each_with_index { |item| item * 2 })
     end
   end
 end

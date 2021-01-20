@@ -22,4 +22,6 @@ Style/CaseEquality:
   Enabled: false
 Metrics/BlockNesting:
   Enabled: false
+Lint/RedundantWithIndex:
+  Enabled: false
   
