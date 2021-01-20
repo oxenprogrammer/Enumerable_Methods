@@ -74,6 +74,16 @@ describe Enumerable do
       expect(my_range.my_none?(String)).to eql(true)
     end
   end
+
+  describe '#my_map' do
+    it 'return an array from a range and apply a block statement to the range' do
+      expect(my_range.my_map { |item| item * 1 }).to eql([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+    end
+
+    it 'return an array from an array and apply a block statement to the array' do
+      expect([1, 2, 3, 4].my_map { |item| item * 1 }).to eql([1, 2, 3, 4])
+    end
+  end
 end
 # rubocop:enable Layout/LineLength
 # rubocop:enable Metrics/BlockLength
