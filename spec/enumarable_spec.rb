@@ -149,6 +149,24 @@ describe Enumerable do
       expect(data.my_count(3)).to eql(1)
     end
   end
+
+  describe '#my_inject' do
+    it 'pass symbol as parameter' do
+      expect(data.my_inject(:*)).to eql(120)
+    end
+
+    it 'pass value and symbol as parameter' do
+      expect(data.my_inject(0, :+)).to eql(15)
+    end
+
+    it 'pass value by block' do
+      expect(data.my_inject { |sum, value| sum + value }).to eql(15)
+    end
+
+    it 'range if the block is not given' do
+      expect(my_range.my_inject { |item| item == false }).to eql(false)
+    end
+  end
 end
 # rubocop:enable Layout/LineLength
 # rubocop:enable Metrics/BlockLength
