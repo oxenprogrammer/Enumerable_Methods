@@ -1,3 +1,5 @@
+# rubocop:disable Layout/LineLength
+# rubocop:disable Metrics/BlockLength
 # spec/game_logic_test_spec.rbc
 
 require '../lib/enumerable_method'
@@ -54,4 +56,24 @@ describe Enumerable do
       expect([1, 2, 'npm'].my_any?('npm')).to eql([1, 2, 'npm'].my_any?('npm'))
     end
   end
+
+  describe '#my_none?' do
+    it 'check if there\'s a symbol in an array' do
+      expect([1, :none, 2].my_none? { |item| item.is_a?(Symbol) }).to eql([1, :none, 2].none? { |item| item.is_a?(Symbol) })
+    end
+
+    it 'check if a range have not something specified in a block' do
+      expect(my_range.my_none? { |item| item > 4 }).to eql(false)
+    end
+
+    it 'return true if don\'t found NUmeric class' do
+      expect(my_range.my_none?(Numeric)).to eql(true)
+    end
+
+    it 'return true if it don\'t found string class' do
+      expect(my_range.my_none?(String)).to eql(true)
+    end
+  end
 end
+# rubocop:enable Layout/LineLength
+# rubocop:enable Metrics/BlockLength
