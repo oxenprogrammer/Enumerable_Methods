@@ -2,7 +2,7 @@
 # rubocop:disable Metrics/BlockLength
 # spec/game_logic_test_spec.rbc
 
-require '../lib/enumerable_method'
+require_relative '../lib/enumerable_method'
 
 describe Enumerable do
   let(:data) { Array.new([1, 2, 3, 4, 5]) }
