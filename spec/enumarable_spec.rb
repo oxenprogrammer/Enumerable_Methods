@@ -101,4 +101,40 @@ describe Enumerable do
       expect(hashdata.my_all? { |item| item == 2 }).to eql(false)
     end
   end
+
+  describe '#my_count' do
+    it 'return number of value if there is no block and parameter' do
+      expect(data.my_count).to eql(5)
+    end
+
+    it 'return number of value in hash when no block is given' do
+      expect(hashdata.my_count).to eql(1)
+    end
+
+    it 'return count of valid value when block is given' do
+      expect(data.my_count { |item| item > 2}).to eql(3)
+    end
+
+    it 'return one if the value match with the parameter' do
+      expect(data.my_count(3)).to eql(1)
+    end
+  end
+
+  describe '#my_inject' do
+    it 'pass symbol as parameter' do
+      expect(data.my_inject(:*)).to eql(120)
+    end
+
+    it 'pass value and symbol as parameter' do
+      expect(data.my_inject(0, :+)).to eql(15)
+    end
+
+    it 'pass value by block' do
+      expect(data.my_inject{ |sum, value| sum + value}).to eql(15)
+    end
+
+    it 'range if the block is not given' do
+      expect(my_range.my_inject { |item| item == false }).to eql(false)
+    end
+  end
 end
