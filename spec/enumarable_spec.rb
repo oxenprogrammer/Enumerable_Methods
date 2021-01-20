@@ -10,12 +10,12 @@ describe Enumerable do
     end
 
     it 'would return the operation in the block when received a block' do
-      expect([1, 2, 3, 4, 5].my_each { |item| p item }).to eql([1, 2, 3, 4, 5])
+      expect([1, 2, 3, 4, 5].my_each { |item| item }).to eql([1, 2, 3, 4, 5])
       # since each don't mutate the original array
     end
 
     it 'would loop throud in array in execute the block statements on each item' do
-      expect(my_range.my_each { |item| p item * 2 }).to eql(my_range.each { |item| p item * 2 })
+      expect(my_range.my_each { |item| item * 2 }).to eql(my_range.each { |item| item * 2 })
     end
   end
 
@@ -43,15 +43,37 @@ describe Enumerable do
     end
 
     it 'check if there\'s a falsy element' do
-      expect([1, 2, false].my_any?(false)).to eql([1, 2, false].my_any?(false))
+      expect([1, 2, false].my_any?(false)).to eql([1, 2, false].any?(false))
     end
 
     it 'check if there\'s a true element' do
-      expect([1, 2, true].my_any?(true)).to eql([1, 2, true].my_any?(true))
+      expect([1, 2, true].my_any?(true)).to eql([1, 2, true].any?(true))
     end
 
     it 'check if there\'s a specific string' do
-      expect([1, 2, 'npm'].my_any?('npm')).to eql([1, 2, 'npm'].my_any?('npm'))
+      expect([1, 2, 'npm'].my_any?('npm')).to eql([1, 2, 'npm'].any?('npm'))
     end
+  end
+######################## Abdul khaliq ##########################
+  describe '#my_each_with_index' do
+    it 'would return Enumarator if there\'s no block' do
+      expect([1, 2, 3, 4, 5].my_each_with_index).to be_an(Enumerator)
+    end
+
+    it 'would return the operation in the block when received a block' do
+      expect([1, 2, 3, 4, 5].my_each_with_index { |item| item }).to eql([1, 2, 3, 4, 5])
+      # since each don't mutate the original array
+    end
+
+    it 'would loop throud in array in execute the block statements on each item' do
+      expect(my_range.my_each_with_index { |item| item * 2 }).to eql(my_range.each_with_index { |item| item * 2 })
+    end
+  end
+
+  describe '#my_all?' do
+    it 'would return Enumarator if there\'s no block' do
+      expect([1, 2, 3, 4, 5].my_all?).to eql(true)
+    end
+
   end
 end
