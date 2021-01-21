@@ -1,6 +1,5 @@
-# This is our custom fake enumerables
+# rubocop:disable Style/Documentation
 module Enumerable
-  # my_each
   def my_each(&block)
     return enum_for(:my_each) unless block_given?
 
@@ -10,7 +9,6 @@ module Enumerable
     self
   end
 
-  # my_each_with_index
   def my_each_with_index
     return to_enum(:my_each_with_index) unless block_given?
 
@@ -23,7 +21,6 @@ module Enumerable
     self
   end
 
-  # my_select function
   def my_select
     return to_enum(:my_select) unless block_given?
 
@@ -35,7 +32,6 @@ module Enumerable
     elements
   end
 
-  # my_all function
   def my_all?(parameter = nil)
     if !parameter.nil?
       flag = true
@@ -63,9 +59,7 @@ module Enumerable
     end
   end
 
-  # my_any?
   def my_any?(parameter = nil)
-    # for parameter
     if !parameter.nil?
       flag = false
       if parameter.instance_of? Class
@@ -76,14 +70,11 @@ module Enumerable
         my_each { |item| flag = true if parameter == item }
       end
       flag
-    # for black_given
     elsif block_given?
       my_each do |element|
         return true if yield(element)
       end
       false
-
-    # for without block and parameter
     else
       my_each do |x|
         return true unless x == false || x.nil?
@@ -92,9 +83,7 @@ module Enumerable
     end
   end
 
-  # my_none?
   def my_none?(parameter = nil)
-    # for parameter
     if !parameter.nil?
       if parameter.instance_of? Regexp
         return (my_select { |item| item.match(parameter) }).length.zero? if parameter.is_a? Regexp
@@ -127,7 +116,6 @@ module Enumerable
     end
   end
 
-  # my_count
   def my_count(obj = nil)
     count = 0
     my_each do |item|
@@ -142,7 +130,6 @@ module Enumerable
     count
   end
 
-  # my_map
   def my_map(proc = nil)
     return enum_for(:my_map) if proc.nil? && !block_given?
 
@@ -159,26 +146,22 @@ module Enumerable
     item
   end
 
-  # my_inject
   def my_inject(pa1 = nil, pa2 = nil)
     data = to_a
-    # Through Error if Parameter and block are not given
     if pa1.nil? && pa2.nil? && !block_given?
       raise LocalJumpError
-    # Block is given and parameter is given but its value is nil
+
     elsif pa1.nil? && block_given?
       data.length.times do |item|
         pa1 = data[item] if item.zero?
         pa1 = yield(pa1, data[item]) unless item.zero?
       end
 
-    # Only Block given
     elsif block_given?
       data.length.times do |item|
         pa1 = yield(pa1, data[item])
       end
 
-    # Parameter 1 is not nil and parameter 2 is nil
     elsif pa2.nil? && !pa1.nil?
       pa2 = pa1
       data.length.times do |item|
@@ -186,7 +169,6 @@ module Enumerable
         pa1 = pa1.send(pa2, data[item]) unless item.zero?
       end
 
-    # Parameter 1 given and Parameter 2 given but equal to Symbol
     elsif pa2.is_a?(Symbol) && !pa1.nil?
       data.length.times do |item|
         pa1 = pa1.send(pa2, data[item])
@@ -200,3 +182,4 @@ module Enumerable
     para.my_inject { |num1, num2| num1 * num2 }
   end
 end
+# rubocop:enable Style/Documentation
