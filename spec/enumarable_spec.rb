@@ -15,7 +15,6 @@ describe Enumerable do
 
     it 'would return the operation in the block when received a block' do
       expect([1, 2, 3, 4, 5].my_each { |item| item }).to eql([1, 2, 3, 4, 5])
-      # since each don't mutate the original array
     end
 
     it 'would loop throud in array in execute the block statements on each item' do
@@ -94,7 +93,6 @@ describe Enumerable do
 
     it 'would return the operation in the block when received a block' do
       expect([1, 2, 3, 4, 5].my_each_with_index { |item| item }).to eql([1, 2, 3, 4, 5])
-      # since each don't mutate the original array
     end
 
     it 'would loop throud in array in execute the block statements on each item' do
