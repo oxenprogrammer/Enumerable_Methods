@@ -78,4 +78,47 @@ describe '#Enumerable' do
       expect(elements.my_map(second_proc)).to be_a Enumerator
     end
   end
+  describe '#Any' do
+    elements = %w[ant bear cat]
+    it 'should return true for all true' do
+      expect(elements.my_any? { |word| word.length >= 3 }).to be true
+    end
+    it 'should return true for one match' do
+      expect(elements.my_any? { |word| word == 'cat' }).to be true
+    end
+    it 'should return true for at least a true' do
+      expect([nil, true, false].my_any?).to be true
+    end
+    it 'should return false if all is false' do
+      expect([nil, false].my_any?).to be false
+    end
+    it 'should return false if none matches' do
+      expect(elements.my_any?(/d/)).to be false
+    end
+    it 'should return true if given an instance of any' do
+      expect([nil, true, 99].my_any?(Integer)).to be true
+    end
+  end
+
+  describe '#All' do
+    elements = %w[ant bear cat]
+    it 'should return true for all true' do
+      expect(elements.my_all? { |word| word.length >= 3 }).to be true
+    end
+    it 'should return false for one match' do
+      expect(elements.my_all? { |word| word == 'cat' }).to be false
+    end
+    it 'should return false for at least a false' do
+      expect(['a', true, false].my_all?).to be false
+    end
+    it 'should return false if all is false' do
+      expect([nil, false].my_all?).to be false
+    end
+    it 'should return false if none matches' do
+      expect(elements.my_all?(/d/)).to be false
+    end
+    it 'should return false if given only one instance' do
+      expect([nil, true, 99].my_all?(Integer)).to be false
+    end
+  end
 end
