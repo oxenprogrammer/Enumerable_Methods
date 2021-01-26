@@ -146,4 +146,22 @@ describe '#Enumerable' do
       expect([].my_none?).to be true
     end
   end
+
+  describe '#Inject' do
+    test_inject = (5..10)
+    longest = %w[cat sheep bear].my_inject do |memo, word|
+      memo.length > word.length ? memo : word
+    end
+    it 'should return a sum of the range' do
+      expect(test_inject.my_inject { |sum, n| sum + n }).to eql 45
+    end
+    it 'should return the product of the range' do
+      expect(test_inject.my_inject(1) do |product, n|
+        product * n
+      end).to eql 151_200
+    end
+    it 'should return the longest word' do
+      expect(longest).to eql 'sheep'
+    end
+  end
 end
