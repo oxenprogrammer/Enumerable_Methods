@@ -37,4 +37,18 @@ describe '#Enumerable' do
       expect((1..4).my_select).to be_a Enumerator
     end
   end
+  describe '#Count' do
+    my_array = [1, 2, 4, 2]
+
+    it 'should return the count 4' do
+      expect(my_array.my_count).to eql 4
+    end
+    it 'should return the count 2' do
+      expect(my_array.my_count(2)).to eql 2
+    end
+    it 'should return the count 3' do
+      expect(my_array.my_count(&:even?)).to eql 3
+    end
+  end
+
 end
