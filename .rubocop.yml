@@ -22,4 +22,7 @@ Style/CaseEquality:
   Enabled: false
 Metrics/BlockNesting:
   Enabled: false
-  
+Metrics/BlockLength:
+  Max: 200
+Style/BlockComments:
+  Enabled: false

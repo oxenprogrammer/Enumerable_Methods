@@ -46,6 +46,12 @@ To get your own copy of our project simply clone the repository to your local ma
         
         ruby main.rb
 
+## Test
+- run `bundle install` in the cli
+- run `rspec` to run the test
+- on Windows run `open coverage/index.html` to see the test coverage.
+- on unix based system, run `xdg-open coverage/index.html` to run the test coverage.
+
 ## Author 1
 
 👤 **Emanuel Okello**
@@ -56,11 +62,11 @@ To get your own copy of our project simply clone the repository to your local ma
 
 ## Author 2
 
-👤 **Abdul Khaliq**
+👤 **Iyunda Ismael Antonio**
 
-- [@abdulkhaliqdev](https://github.com/abdulkhaliqdev)
-- [@abdulkhaliqdev](https://twitter.com/Abdulkhaliqdev)
-- [LinkedIn](https://www.linkedin.com/in/abdul-khaliq-89452b1a9/)
+- GitHub: [@ixboy](https://github.com/ixboy)
+- Twitter: [@ismaelixboy](https://twitter.com/ismaelixboy)
+- LinkedIn: [ismael-antonio](https://www.linkedin.com/in/ismael-antonio-0b7712114/)
 
 ## 🤝 Contributing
 
