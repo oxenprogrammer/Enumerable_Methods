@@ -148,20 +148,45 @@ describe '#Enumerable' do
   end
 
   describe '#Inject' do
-    test_inject = (5..10)
-    longest = %w[cat sheep bear].my_inject do |memo, word|
-      memo.length > word.length ? memo : word
+    it 'reduces when block is given' do
+      array = [75, 2, 4, 2, 3, 6, 9, 11, 22, 34, 15]
+      result = array.my_inject { |sum, n| sum + n }
+      expected = array.reduce { |sum, n| sum + n }
+      expect(result).to eq(expected)
+      result = array.my_inject { |product, n| product * n }
+      expected = array.reduce { |product, n| product * n }
+      expect(result).to eq(expected)
     end
-    it 'should return a sum of the range' do
-      expect(test_inject.my_inject { |sum, n| sum + n }).to eql 45
+    it 'reduces a range or array when no block, no initial and symbol is given' do
+      range = (5..10)
+      array = [5, 7, 9, 11, 13, 15]
+      expect(range.my_inject(:+)).to eq(range.reduce(:+))
+      expect(array.my_inject(:+)).to eq(array.reduce(:+))
     end
-    it 'should return the product of the range' do
-      expect(test_inject.my_inject(1) do |product, n|
-        product * n
-      end).to eql 151_200
+    it 'reduces a range or array when no block, initial and symbol is given' do
+      range = (5..10)
+      array = [5, 7, 9, 11, 13, 15]
+      expect(range.my_inject(100, :*)).to eq(range.reduce(100, :*))
+      expect(array.my_inject(100, :*)).to eq(array.reduce(100, :*))
     end
-    it 'should return the longest word' do
-      expect(longest).to eql 'sheep'
+    it 'reduces a range or array when block and initial' do
+      range = (5..10)
+      array = [5, 7, 9, 11, 13, 15]
+      expect(range.my_inject(100) { |a, b| a << b }).to eq(range.reduce(100) { |a, b| a << b })
+      expect(array.my_inject(100) { |a, b| a << b }).to eq(array.reduce(100) { |a, b| a << b })
+    end
+    it 'finds the longest word' do
+      result = %w[cat sheep bear].my_inject do |memo, word|
+        memo.length > word.length ? memo : word
+      end
+      expected = %w[cat sheep bear].reduce do |memo, word|
+        memo.length > word.length ? memo : word
+      end
+      expect(result).to eq(expected)
+    end
+    it 'raises a "LocalJumpError" when no block or argument is given' do
+      range = (5..10)
+      expect { range.my_inject }.to raise_error(LocalJumpError)
     end
   end
 end
