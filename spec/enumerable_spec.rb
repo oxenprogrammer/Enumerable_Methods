@@ -121,4 +121,29 @@ describe '#Enumerable' do
       expect([nil, true, 99].my_all?(Integer)).to be false
     end
   end
+
+  describe '#None' do
+    elements = %w[ant bear cat]
+    it 'should return false for all true' do
+      expect(elements.my_none? { |word| word.length == 3 }).to be false
+    end
+    it 'should return false for one match' do
+      expect(elements.my_none? { |word| word == 'cat' }).to be false
+    end
+    it 'should return true for zero match' do
+      expect(elements.my_none? { |word| word == 'lion' }).to be true
+    end
+    it 'should return false for at least one true' do
+      expect(['a', true, false].my_none?).to be false
+    end
+    it 'should return true if all is false' do
+      expect([nil, false].my_none?).to be true
+    end
+    it 'should return true if none matches' do
+      expect(elements.my_none?(/d/)).to be true
+    end
+    it 'should return true if array is empty' do
+      expect([].my_none?).to be true
+    end
+  end
 end
